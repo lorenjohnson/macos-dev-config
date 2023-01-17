@@ -43,11 +43,13 @@ Plug 'nvim-lualine/lualine.nvim'                   " Status line
 Plug 'akinsho/bufferline.nvim'                     " Buffers
 Plug 'machakann/vim-highlightedyank'               " Highlight yanked text
 Plug 'kyazdani42/nvim-tree.lua'                    " File explorer
+" Color scheemes
+Plug 'marko-cerovac/material.nvim'
 Plug 'folke/tokyonight.nvim', { 'branch': 'main' } " Color scheme
 Plug 'elvessousa/sobrio'                           " https://dev.to/elvessousa/my-basic-neovim-setup-253l
 Plug 'declancm/cinnamon.nvim'
-"Plug 'psliwka/vim-smoothie'
-"Plug 'karb94/neoscroll.nvim'
+Plug 'psliwka/vim-smoothie'
+" Plug 'karb94/neoscroll.nvim'
 " Syntax highlighting
 Plug 'mxw/vim-jsx'
 Plug 'pangloss/vim-javascript'
@@ -88,14 +90,14 @@ let g:airline_theme='sobrio'
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 
-lua require('gitsigns').setup({ pickers = { theme = 'dropdown' } })
+lua require('gitsigns').setup({})
 lua require('cinnamon').setup({ extra_keymaps = true, override_keymaps = true, max_length = 500, scroll_limit = -1 })
 
 " --- Colors
 "
 
 set background=dark
-colorscheme sobrio
+colorscheme habamax 
 
 
 " --- Remaps
@@ -109,8 +111,8 @@ nnoremap <silent><leader>] :BufferLineCycleNext<Cr>
 nnoremap <silent><leader>q :bdelete<Cr>
 nnoremap <silent>π :lua require'telescope.builtin'.git_files(require('telescope.themes').get_dropdown({}))<Cr>
 nnoremap <silent><leader>f :lua require'telescope.builtin'.git_files(require('telescope.themes').get_dropdown({}))<Cr>
-"nnoremap <silent>ππ :lua require'telescope.builtin'.find_files{}<Cr>
-"nnoremap <silent><leader>ff :lua require'telescope.builtin'.find_files(require('telescope.themes').get_dropdown({}))<<Cr>
+" nnoremap <silent>ππ :lua require'telescope.builtin'.find_files{}<Cr>
+" nnoremap <silent><leader>ff :lua require'telescope.builtin'.find_files(require('telescope.themes').get_dropdown({}))<<Cr>
 nnoremap <silent>∫ :NERDTreeToggle<Cr>
 
 " --- Autocommands
