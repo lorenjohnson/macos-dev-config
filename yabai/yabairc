@@ -7,11 +7,11 @@ set -x
 declare -A gaps
 declare -A color
 
-gaps["top"]="4"
+gaps["top"]="10"
 gaps["bottom"]="24"
-gaps["left"]="4"
-gaps["right"]="4"
-gaps["inner"]="0"
+gaps["left"]="10"
+gaps["right"]="10"
+gaps["inner"]="10"
 
 color["focused"]="0xE0808080"
 
@@ -25,8 +25,8 @@ color["preselect"]="0xE02d74da"
 # ===== Loading Scripting Additions ============
 
 # See: https://github.com/koekeishiya/yabai/wiki/Installing-yabai-(latest-release)#macos-big-sur---automatically-load-scripting-addition-on-startup
-sudo yabai --load-sa
 yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
+sudo yabai --load-sa
 
 # ===== Tiling setting =========================
 
@@ -41,15 +41,15 @@ yabai -m config window_gap                  "${gaps["inner"]}"
 yabai -m config mouse_follows_focus         off
 yabai -m config focus_follows_mouse         off
 
-yabai -m config window_topmost              off
+# yabai -m config window_topmost              on
 yabai -m config window_opacity              on
 yabai -m config window_shadow               float
 
-yabai -m config window_border               on
-yabai -m config window_border_width         2
-yabai -m config active_window_border_color  "${color["focused"]}"
-#yabai -m config normal_window_border_color  "${color["normal"]}"
-#yabai -m config insert_feedback_color       "${color["preselect"]}"
+# yabai -m config window_border               on
+# yabai -m config window_border_width         2
+# yabai -m config active_window_border_color  "${color["focused"]}"
+# yabai -m config normal_window_border_color  "${color["normal"]}"
+yabai -m config insert_feedback_color       "${color["preselect"]}"
 
 yabai -m config active_window_opacity       1.0
 yabai -m config normal_window_opacity       0.90
@@ -57,7 +57,7 @@ yabai -m config split_ratio                 0.50
 
 yabai -m config auto_balance                off
 
-yabai -m config mouse_modifier              fn
+yabai -m config mouse_modifier              alt
 yabai -m config mouse_action1               move
 yabai -m config mouse_action2               resize
 
@@ -69,11 +69,10 @@ yabai -m config normal_window_opacity 0.9
 
 yabai -m rule --add label="Finder" app="^Finder$" title="(Co(py|nnect)|Move|Info|Pref)" manage=off
 yabai -m rule --add label="Safari" app="^Safari$" title="^(General|(Tab|Password|Website|Extension)s|AutoFill|Se(arch|curity)|Privacy|Advance)$" manage=off
-yabai -m rule --add label="macfeh" app="^macfeh$" manage=off
-yabai -m rule --add label="System Preferences" app="^System Preferences$" title=".*" manage=off
+yabai -m rule --add label="System Settings" app="^System Settings$" title=".*" manage=off
 yabai -m rule --add label="App Store" app="^App Store$" manage=off
 yabai -m rule --add label="Activity Monitor" app="^Activity Monitor$" manage=off
-yabai -m rule --add label="KeePassXC" app="^KeePassXC$" manage=off
+yabai -m rule --add label="1Password" app="^1Password$" manage=off
 yabai -m rule --add label="Calculator" app="^Calculator$" manage=off
 yabai -m rule --add label="Dictionary" app="^Dictionary$" manage=off
 yabai -m rule --add label="mpv" app="^mpv$" manage=off
@@ -81,7 +80,9 @@ yabai -m rule --add label="Software Update" title="Software Update" manage=off
 yabai -m rule --add label="About This Mac" app="System Information" title="About This Mac" manage=off
 yabai -m rule --add label="Re:" app="Mail" title="Re:" manage=off
 yabai -m rule --add label="New Message" app="Mail" title="New Message" manage=off
-
+yabai -m rule --add app="^zoom.us$" manage=off
+yabai -m rule --add app="^Affinity" manage=off
+yabai -m rule --add app="^Simulator" manage=off
 
 # ====== Setup Spaces ==========================
 
@@ -99,32 +100,37 @@ function setup_space {
   yabai -m space "$idx" --label "$name"
 }
 
-setup_space 1 code
-setup_space 2 terminals
-setup_space 3 web
-setup_space 4 social
-setup_space 5 lists
-setup_space 6 other
+setup_space 1 misc
+setup_space 2 code
+setup_space 3 terminals
+setup_space 4 web
+setup_space 5 social
+setup_space 6 lists
 
-yabai -m rule --add app="^Code$" space=1
-yabai -m rule --add app="^iTerm$" space=2
-yabai -m rule --add app="^Safari$" space=3
-yabai -m rule --add app="^Mail$" space=^4
-yabai -m rule --add app="^OpenPhone$" space=^4
-yabai -m rule --add app="^Messages$" space=4
-yabai -m rule --add app="^Slack$" space=4
-yabai -m rule --add app="^Dynalist$" space=5
-
+# yabai -m rule --add app="^Code$" space=code
+# yabai -m rule --add app="^iTerm2$" space=code
+# yabai -m rule --add app="^Safari$" space=web
+# yabai -m rule --add app="^Mail$" space=^social
+# yabai -m rule --add app="^OpenPhone$" space=^social
+# yabai -m rule --add app="^Messages$" space=social
+# yabai -m rule --add app="^Slack$" space=social
+# yabai -m rule --add app="^Dynalist$" space=lists
 
 # ===== Signals ================================
 
-yabai -m signal --add event=application_front_switched action="${ubersicht_spaces_refresh_command}"
-yabai -m signal --add event=display_changed action="${ubersicht_spaces_refresh_command}"
-yabai -m signal --add event=space_changed action="${ubersicht_spaces_refresh_command}"
-yabai -m signal --add event=window_created action="${ubersicht_spaces_refresh_command}"
-yabai -m signal --add event=window_destroyed action="${ubersicht_spaces_refresh_command}"
-yabai -m signal --add event=window_focused action="${ubersicht_spaces_refresh_command}"
-yabai -m signal --add event=window_title_changed action="${ubersicht_spaces_refresh_command}"
+# Borders no longer supported as of yabai v6.x
+# yabai -m signal --add event=application_front_switched action="$HOME/.config/yabai/scripts/border_only_if_multiple_windows.sh"
+# yabai -m signal --add event=window_focused action="$HOME/.config/yabai/scripts/border_only_if_multiple_windows.sh"
+
+# yabai -m signal --add event=window_focused action="${ubersicht_spaces_refresh_command}"
+# yabai -m signal --add event=display_changed action="${ubersicht_spaces_refresh_command}"
+# yabai -m signal --add event=space_changed action="${ubersicht_spaces_refresh_command}"
+# yabai -m signal --add event=window_created action="${ubersicht_spaces_refresh_command}"
+# yabai -m signal --add event=window_destroyed action="${ubersicht_spaces_refresh_command}"
+# yabai -m signal --add event=window_focused action="${ubersicht_spaces_refresh_command}"
+# yabai -m signal --add event=window_title_changed action="${ubersicht_spaces_refresh_command}"
 
 set +x
 printf "yabai: configuration loaded...\\n"
+
+borders active_color=0xffe1e3e4 inactive_color=0xff494d64 width=5.0 &

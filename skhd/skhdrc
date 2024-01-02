@@ -1,0 +1,96 @@
+# opens iTerm2
+alt - return : "${HOME}/.config/yabai/scripts/open_iterm2.sh"
+
+# Navigation
+# alt - tab : yabai -m window --focus next || yabai -m window --focus first
+# alt - left : yabai -m window --focus west
+# alt - down : yabai -m window --focus south
+# alt - up : yabai -m window --focus north
+# alt - right : yabai -m window --focus east
+
+# Moving windows
+# shift + alt - left : yabai -m window --warp west
+# shift + alt - down : yabai -m window --warp south
+# shift + alt - up : yabai -m window --warp north
+# shift + alt - right : yabai -m window --warp east
+
+# Move focus container to workspace
+shift + alt - m : yabai -m window --space last; yabai -m space --focus last
+shift + alt - p : yabai -m window --space prev; yabai -m space --focus prev
+shift + alt - n : yabai -m window --space next; yabai -m space --focus next
+shift + alt - 1 : yabai -m window --space 1; yabai -m space --focus 1
+shift + alt - 2 : yabai -m window --space 2; yabai -m space --focus 2
+shift + alt - 3 : yabai -m window --space 3; yabai -m space --focus 3
+shift + alt - 4 : yabai -m window --space 4; yabai -m space --focus 4
+shift + alt - 5 : yabai -m window --space 5; yabai -m space --focus 5
+shift + alt - 6 : yabai -m window --space 6; yabai -m space --focus 6
+
+# Resize windows
+lctrl + alt - left : yabai -m window --resize left:-50:0; \
+                  yabai -m window --resize right:-50:0
+lctrl + alt - down : yabai -m window --resize bottom:0:50; \
+                  yabai -m window --resize top:0:50
+lctrl + alt - up : yabai -m window --resize top:0:-50; \
+                 yabai -m window --resize bottom:0:-50
+lctrl + alt - right : yabai -m window --resize right:50:0; \
+                  yabai -m window --resize left:50:0
+
+# Equalize size of windows
+lctrl + alt - e : yabai -m space --balance
+
+# Enable / Disable gaps in current workspace
+lctrl + alt - g : yabai -m space --toggle padding; yabai -m space --toggle gap
+
+# Rotate windows clockwise and anticlockwise
+# alt - r         : yabai -m space --rotate 270
+shift + alt - r : yabai -m space --rotate 90
+
+# Rotate on X and Y Axis
+shift + alt - x : yabai -m space --mirror x-axis
+shift + alt - y : yabai -m space --mirror y-axis
+
+# Set insertion point for focused container
+shift + lctrl + alt - h : yabai -m window --insert west
+shift + lctrl + alt - j : yabai -m window --insert south
+shift + lctrl + alt - k : yabai -m window --insert north
+shift + lctrl + alt - l : yabai -m window --insert east
+
+# Float / Unfloat window
+hyper - space : \
+    yabai -m config --space $(yabai -m query --spaces --space|\jq -r .index) layout $(yabai -m query --spaces --space |jq -r 'if .type|contains("float") then "bsp" else "float" end')
+
+alt - space : \
+    yabai -m window --toggle float; \
+    yabai -m window --toggle border
+
+# Restart Yabai
+alt - r : \
+    /usr/bin/env osascript <<< \
+        "display notification \"Restarting Yabai\" with title \"Yabai\""; \
+    yabai --restart-service
+
+# ctrl + alt + cmd - r : yabai --restart-service"
+
+# Make window native fullscreen
+alt - f         : yabai -m window --toggle zoom-fullscreen
+hyper - return : yabai -m window --toggle zoom-fullscreen
+hyper - f : yabai -m space --layout $(yabai -m query --spaces --space | jq -r 'if .type == "bsp" then "float" else "bsp" end')
+alt - 1 : yabai -m space --focus 1
+alt - 2 : yabai -m space --focus 2
+alt - 3 : yabai -m space --focus 3
+alt - 4 : yabai -m space --focus 4
+alt - 5 : yabai -m space --focus 5
+alt - 6 : yabai -m space --focus 6
+alt - 7 : yabai -m space --focus 7
+hyper - right : yabai -m space --focus next
+hyper - left : yabai -m space --focus prev
+hyper - l : yabai -m space --focus next
+hyper - h : yabai -m space --focus prev
+
+# If enabled SKHD won't listen for events in any app in this list
+# .blacklist [
+#     "terminal"
+#     "iterm"
+#     "google chrome"
+#     "safari"
+# ]
