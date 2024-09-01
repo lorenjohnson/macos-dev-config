@@ -35,6 +35,9 @@ lctrl + alt - up : yabai -m window --resize top:0:-50; \
 lctrl + alt - right : yabai -m window --resize right:50:0; \
                   yabai -m window --resize left:50:0
 
+# Toggle window split type
+alt - e : yabai -m window --toggle split
+
 # Equalize size of windows
 lctrl + alt - e : yabai -m space --balance
 
