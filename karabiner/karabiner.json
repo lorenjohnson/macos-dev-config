@@ -1,0 +1,101 @@
+{
+    "global": { "show_in_menu_bar": false },
+    "profiles": [
+        {
+            "complex_modifications": {
+                "rules": [
+                    {
+                        "description": "Safari: ctrl+shift+b → Toggle Sidebar (View ▸ Show/Hide Sidebar)",
+                        "manipulators": [
+                            {
+                                "conditions": [
+                                    {
+                                        "bundle_identifiers": [
+                                            "^com\\.apple\\.Safari$"
+                                        ],
+                                        "type": "frontmost_application_if"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "b",
+                                    "modifiers": {
+                                        "mandatory": ["control", "shift"],
+                                        "optional": ["any"]
+                                    }
+                                },
+                                "to": [{ "shell_command": "osascript -e 'tell application \"System Events\"' -e 'if not (exists process \"Safari\") then return' -e 'tell process \"Safari\"' -e 'set vMenu to menu \"View\" of menu bar item \"View\" of menu bar 1' -e 'if exists menu item \"Hide Sidebar\" of vMenu then' -e 'click menu item \"Hide Sidebar\" of vMenu' -e 'else if exists menu item \"Show Sidebar\" of vMenu then' -e 'click menu item \"Show Sidebar\" of vMenu' -e 'else' -e '(* German fallbacks *)' -e 'if exists menu item \"Seitenleiste ausblenden\" of vMenu then' -e 'click menu item \"Seitenleiste ausblenden\" of vMenu' -e 'else if exists menu item \"Seitenleiste einblenden\" of vMenu then' -e 'click menu item \"Seitenleiste einblenden\" of vMenu' -e 'end if' -e 'end if' -e 'end tell' -e 'end tell'" }],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "description": "⌘-enter to send in Apple Mail",
+                        "manipulators": [
+                            {
+                                "conditions": [
+                                    {
+                                        "bundle_identifiers": [
+                                            "com.apple.mail"
+                                        ],
+                                        "description": "Only for Apple Mail",
+                                        "type": "frontmost_application_if"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "return_or_enter",
+                                    "modifiers": { "mandatory": ["command"] }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "d",
+                                        "modifiers": ["shift", "command"]
+                                    }
+                                ],
+                                "type": "basic"
+                            }
+                        ]
+                    },
+                    {
+                        "description": "Mail: ctrl+shift+b → Toggle Sidebar (View > Show/Hide Sidebar)",
+                        "manipulators": [
+                            {
+                                "conditions": [
+                                    {
+                                        "bundle_identifiers": [
+                                            "^com\\.apple\\.mail$"
+                                        ],
+                                        "type": "frontmost_application_if"
+                                    }
+                                ],
+                                "from": {
+                                    "key_code": "b",
+                                    "modifiers": {
+                                        "mandatory": ["control", "shift"],
+                                        "optional": ["any"]
+                                    }
+                                },
+                                "to": [{ "shell_command": "osascript -e 'tell application \"System Events\"' -e 'if not (exists process \"Mail\") then return' -e 'tell process \"Mail\"' -e 'set vMenu to menu \"View\" of menu bar item \"View\" of menu bar 1' -e 'if exists menu item \"Hide Sidebar\" of vMenu then' -e 'click menu item \"Hide Sidebar\" of vMenu' -e 'else if exists menu item \"Show Sidebar\" of vMenu then' -e 'click menu item \"Show Sidebar\" of vMenu' -e 'else' -e '(* locale fallbacks *)' -e 'if exists menu item \"Seitenleiste ausblenden\" of vMenu then' -e 'click menu item \"Seitenleiste ausblenden\" of vMenu' -e 'else if exists menu item \"Seitenleiste einblenden\" of vMenu then' -e 'click menu item \"Seitenleiste einblenden\" of vMenu' -e 'end if' -e 'end if' -e 'end tell' -e 'end tell'" }],
+                                "type": "basic"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "devices": [
+                {
+                    "identifiers": {
+                        "is_keyboard": true,
+                        "is_pointing_device": true,
+                        "product_id": 16403,
+                        "vendor_id": 12625
+                    },
+                    "ignore": false,
+                    "ignore_vendor_events": true
+                }
+            ],
+            "name": "Default profile",
+            "selected": true,
+            "virtual_hid_keyboard": { "keyboard_type_v2": "ansi" }
+        }
+    ]
+}

@@ -2,8 +2,8 @@
 
 -- deps for skhd -> hs CLI:
 require("hs.ipc")
--- optional: auto-install/update the `hs` tool
--- hs.ipc.cliInstall()
+
+hs.loadSpoon("CenterFocus")
 
 hs.window.animationDuration = 0
 
@@ -50,7 +50,7 @@ end
 local function posRight()
   local w = win(); if not w then return end
   local key = id(w)
-  state.posIdx[key] = ((state.posIdx[key] or 2)    ) % 3 + 1  -- +1 in 1..3
+  state.posIdx[key] = ((state.posIdx[key] or 2)    ) % 3 + 1
   applyFrame(w)
 end
 
@@ -103,14 +103,47 @@ local function toggleMax()
   end
 end
 
+-- PageUp: center 1/3 toggle
+local centerState = {} -- [winId] = saved frame
+
+local function toggleCenterTwoThirds()
+  local w = win(); if not w then return end
+  local key = id(w)
+
+  if centerState[key] then
+    -- restore
+    w:setFrame(centerState[key])
+    centerState[key] = nil
+  else
+    -- save current and center 2/3
+    centerState[key] = w:frame()
+    local scr = w:screen():frame()
+    local newW = math.floor(scr.w * (2/3) + 0.5)
+    local newX = scr.x + math.floor((scr.w - newW) / 2 + 0.5)
+    w:setFrame({ x = newX, y = scr.y, w = newW, h = scr.h })
+  end
+end
+
+-- auto-restore when window loses focus
+hs.window.filter.default:subscribe(hs.window.filter.windowUnfocused, function(w)
+  local key = id(w)
+  if centerState[key] then
+    w:setFrame(centerState[key])
+    centerState[key] = nil
+  end
+end)
+
+-- export API for skhd
 _G.wm = {
-  left   = posLeft,      -- ⌥H
-  right  = posRight,     -- ⌥L
-  sizeP  = sizePrev,     -- ⌥⇧H
-  sizeN  = sizeNext,     -- ⌥⇧L
-  down   = cycleHeightBottom, -- ⌥J
-  up     = cycleHeightTop,    -- ⌥K
-  max    = toggleMax,    -- ⌥F
+  left   = posLeft,
+  right  = posRight,
+  sizeP  = sizePrev,
+  sizeN  = sizeNext,
+  down   = cycleHeightBottom,
+  up     = cycleHeightTop,
+  max    = toggleMax,
+  centerTwoThirds = toggleCenterTwoThirds,
+  focusModeToggle = function() spoon.CenterFocus:toggle() end
 }
 
 -- optional on-load toast

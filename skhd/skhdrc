@@ -1,18 +1,20 @@
 # positions: left <-> center <-> right
-alt - h       : hs -c 'wm.left()'
-alt - l       : hs -c 'wm.right()'
+alt - left                 : hs -c 'wm.left()'
+alt - right                : hs -c 'wm.right()'
 
 # size within current position: 1/3 <-> 1/2 <-> 2/3
-alt + shift - h : hs -c 'wm.sizeP()'
-alt + shift - l : hs -c 'wm.sizeN()'
+alt + shift - left         : hs -c 'wm.sizeP()'
+alt + shift - right        : hs -c 'wm.sizeN()'
 
 # height cycles (bottom/top)
-alt - j       : hs -c 'wm.down()'
-alt - k       : hs -c 'wm.up()'
+alt - down                 : hs -c 'wm.down()'
+alt - up                   : hs -c 'wm.up()'
+
+# toggle center 1/3 <--> restore (PgUp)
+alt - pageup               : hs -c 'wm.centerThird()'
 
 # maximize <-> restore
-alt - f       : hs -c 'wm.max()'
-
+alt - f                    : hs -c 'wm.max()'
 
 # OLD YABAI CONFIGURATION:
 
